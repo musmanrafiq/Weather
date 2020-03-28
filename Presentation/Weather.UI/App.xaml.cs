@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
+using Weather.UI.Support;
 
 namespace Weather.UI
 {
@@ -14,7 +16,15 @@ namespace Weather.UI
             base.OnStartup(e);
 
             GlobalExceptionHandlerRegistration();
-            
+
+            // register dependencies
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddWpfDependencies();
+
+            // pull mainwindow and launch
+            var services = serviceCollection.BuildServiceProvider();
+            var mainWindow = services.GetRequiredService<MainWindow>();
+            mainWindow.Show();
         }
 
         #region private methods
